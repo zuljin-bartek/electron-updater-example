@@ -13,7 +13,12 @@
     "electron-updater": "^1.4.2"
   },
   "build": {
-    "appId": "com.github.iffy.electronupdaterexample",
+    "appId": "com.github.zuljin-bartek.electronupdaterexample",
+    "publish": [{
+      "provider": "github",
+      "owner": "zuljin-bartek",
+      "repo": "electron-updater-example"
+    }],
     "mac": {
       "category": "your.app.category.type",
       "target": [
