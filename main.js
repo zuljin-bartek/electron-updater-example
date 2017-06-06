@@ -54,6 +54,10 @@ if (process.platform === 'darwin') {
 //-------------------------------------------------------------------
 let win;
 
+function sendStatusToWindowBase(topic, text) {
+  log.info(text);
+  win.webContents.send(topic, text);
+}
 function sendStatusToWindow(text) {
   log.info(text);
   win.webContents.send('message', text);
@@ -84,6 +88,7 @@ autoUpdater.on('download-progress', (progressObj) => {
   log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
   log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
   sendStatusToWindow(log_message);
+  sendStatusToWindowBase('progress', progressObj.percent);
 })
 autoUpdater.on('update-downloaded', (ev, info) => {
   sendStatusToWindow('Update downloaded; will install in 5 seconds');
