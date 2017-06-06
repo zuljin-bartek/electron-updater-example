@@ -15,6 +15,9 @@
         0%
       </div>
     </div>
+    
+    <button id="dlandinstall" type="button" class="btn btn-primary" disabled>Download and install it.</button>
+    
     <div id="messages"></div>
   </div>
 <script>
@@ -41,8 +44,16 @@ ipcRenderer.on('message', function(event, text) {
 })
 ipcRenderer.on('progress', function(event, text) {
   var progressbar = $('.progress-bar');
-  upprog(progressbar, text);
+  upprog(progressbar, parseFloat(text).toFixed(2));
 })
+ipcRenderer.on('update-download-confirm', function(event, text) {
+  console.log("button good to go");
+  $('#dlandinstall').prop("disabled", false);
+})
+$("#dlandinstall").on("click", function(){
+  console.log("cliked");
+  ipcRenderer.send('update-download-confirmed', 'good to go');
+});
 </script>
 </body>
 </html>

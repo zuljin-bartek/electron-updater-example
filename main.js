@@ -15,6 +15,7 @@ const {autoUpdater} = require("electron-updater");
 //-------------------------------------------------------------------
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
+autoUpdater.autoDownload = false;
 log.info('App starting...');
 
 //-------------------------------------------------------------------
@@ -76,12 +77,17 @@ autoUpdater.on('checking-for-update', () => {
 })
 autoUpdater.on('update-available', (ev, info) => {
   sendStatusToWindow('Update available.');
+  sendStatusToWindowBase('update-download-confirm', 'confirmation required');
 })
 autoUpdater.on('update-not-available', (ev, info) => {
   sendStatusToWindow('Update not available.');
 })
 autoUpdater.on('error', (ev, err) => {
   sendStatusToWindow('Error in auto-updater.');
+})
+ipcMain.on('update-download-confirmed', function (ev, info) {
+  sendStatusToWindow('Update download confirmed.');
+  autoUpdater.downloadUpdate();
 })
 autoUpdater.on('download-progress', (progressObj) => {
   let log_message = "Download speed: " + progressObj.bytesPerSecond;
